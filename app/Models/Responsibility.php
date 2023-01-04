@@ -28,4 +28,11 @@ class Responsibility extends Model
         'is_verified',
         'verified_at',
     ];
+
+      // Relationship with Responsibility and Role model ( many to one )
+    public function role() 
+    {
+        return $this->belongsTo(Role::class);
+    }
+    
 }

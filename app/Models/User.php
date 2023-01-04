@@ -58,4 +58,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+    
+    // Relationship with Company to User Model (Many to Many)
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class);
+    }
 }

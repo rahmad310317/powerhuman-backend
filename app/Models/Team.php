@@ -9,4 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Team extends Model
 {
     use HasFactory, softDeletes;
+
+    // Relationship with team and companies model ( many to one )
+
+    public function companies()
+    {
+        return $this->belongsTo(Company::class);
+    }
+     
+     // Relationship with team and employee model ( one to many )
+    public function employes()
+    {
+        return $this->hasMany(Employes::class);
+    }
 }

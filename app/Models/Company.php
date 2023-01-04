@@ -19,4 +19,24 @@ class Company extends Model
         'name',
         'logo',
     ];
+
+    // Relationship with user and company model (Many to Many)
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+     // Relationship with company and teams model (one to Many)
+
+    public function teams()
+    {
+        return $this->hasMany(Team::class);
+    }
+
+     // Relationship with company and teams role (one to Many)
+     public function roles()
+     {
+         return $this->hasMany(Role::class);
+     }
 }
