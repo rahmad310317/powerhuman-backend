@@ -10,6 +10,12 @@ class Team extends Model
 {
     use HasFactory, softDeletes;
 
+    protected $fillable = [
+        'name',
+        'logo',
+        'company_id',
+    ];
+
     // Relationship with team and companies model ( many to one )
 
     public function company()

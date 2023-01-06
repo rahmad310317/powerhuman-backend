@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
  */
-class RolesFactory extends Factory
+class RoleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class RolesFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->JobTitle,
+            'name' => $this->faker->jobTitle,
             'company_id' => $this->faker->numberBetween(1, 10),
         ];
     }

@@ -18,15 +18,7 @@ class Responsibility extends Model
      */
     protected $fillable = [
         'name',
-        'email',
-        'gender',
-        'age',
-        'phone',
-        'photo',
-        'team_id',
         'role_id',
-        'is_verified',
-        'verified_at',
     ];
 
       // Relationship with Responsibility and Role model ( many to one )

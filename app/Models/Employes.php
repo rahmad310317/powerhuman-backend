@@ -10,6 +10,20 @@ class Employes extends Model
 {
     use HasFactory, softDeletes;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'gender',
+        'age',
+        'phone',
+        'photo',
+        'team_id',
+        'role_id',
+        'is_verified',
+        'verified_at',
+    ];
+
+
    // Relationship with employee and team model ( many to one )
     
    public function team()

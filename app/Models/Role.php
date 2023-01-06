@@ -10,6 +10,11 @@ class Role extends Model
 {
     use HasFactory, softDeletes;
 
+    protected $fillable = [
+        'name',
+        'role_id',
+    ];
+
        // Relationship with Role and Company model ( many to one )
     public function company(){
         return $this->belongsTo(Company::class);

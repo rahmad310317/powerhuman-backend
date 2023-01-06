@@ -17,7 +17,7 @@ class EmployesFactory extends Factory
     public function definition()
     {
         return [
-            //
+           //
         ];
     }
 }
