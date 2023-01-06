@@ -12,7 +12,7 @@ class Team extends Model
 
     // Relationship with team and companies model ( many to one )
 
-    public function companies()
+    public function company()
     {
         return $this->belongsTo(Company::class);
     }

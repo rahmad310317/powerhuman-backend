@@ -11,7 +11,7 @@ class Role extends Model
     use HasFactory, softDeletes;
 
        // Relationship with Role and Company model ( many to one )
-    public function companies(){
+    public function company(){
         return $this->belongsTo(Company::class);
     }
       // Relationship with Role and Employe model ( one to many )

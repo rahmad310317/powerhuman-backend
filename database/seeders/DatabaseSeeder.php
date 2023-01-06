@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Seeder; 
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // data seeder untuk table users
         // \App\Models\User::factory(10)->create();
+        
+        // data seeder untuk table companies
+        // \App\Models\Company::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // data seeder untuk table teams
+        // \App\Models\Team::factory(35)->create();
+
+        // data seeder untuk table roles
+        \App\Models\Role::factory(50)->create();
+
+        // data seeder untuk table responsibility
+        // \App\Models\Responsibility::factory(100)->create();
+            
     }
-}
+} 
