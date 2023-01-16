@@ -80,4 +80,20 @@ class UserController extends Controller
             return ResponseFormatter::error(['Authentication Failed', $error]);
         }
     }
+    // Logout controller
+    public function logout(Request $request)
+    {
+        // Revoke token
+        $token = $request->user()->currentAccessToken()->delete();
+        // return response
+        return ResponseFormatter::success($token, 'Log out success');
+    }
+    // Fetch user controller
+    public function fetch(Request $request)
+    {
+        // get user
+        $user = $request->user();
+        // return response
+        return ResponseFormatter::success($user, 'Data user berhasil diambil');
+    }
 }

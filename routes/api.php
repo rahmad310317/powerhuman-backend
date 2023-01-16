@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\CompanyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// End-Point Route Company
 Route::get('/company', [CompanyController::class, 'all']);
+
+
+
+// End-Point Route Login
+Route::post('/login', [UserController::class, 'login']);
+// End-Point Route Register
+Route::post('/register', [UserController::class, 'register']);
+// End-Point Route Logout
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+// End-Point Route Fetch User
+Route::get('/user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
