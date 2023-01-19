@@ -20,16 +20,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// End-Point Route Company
-Route::get('/company', [CompanyController::class, 'all']);
+// API Company
+Route::get('company', [CompanyController::class, 'all']);
+Route::post('company', [CompanyController::class, 'create'])->middleware('auth:sanctum');
+
 
 
 
 // End-Point Route Login
-Route::post('/login', [UserController::class, 'login']);
+Route::post('login', [UserController::class, 'login']);
 // End-Point Route Register
-Route::post('/register', [UserController::class, 'register']);
+Route::post('register', [UserController::class, 'register']);
 // End-Point Route Logout
-Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 // End-Point Route Fetch User
-Route::get('/user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
+Route::get('user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
