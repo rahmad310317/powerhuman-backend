@@ -15,23 +15,20 @@ use App\Http\Controllers\API\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Company Route
+Route::prefix('company')->middleware('auth:sanctum')->name('company.')->group(function () {
+    Route::get('', [CompanyController::class, 'fetch'])->name('fetch');
+    Route::post('', [CompanyController::class, 'create'])->name('create');
+    Route::post('update/{id}', [CompanyController::class, 'update'])->name('update');
 });
+// Auth Route
+Route::name('auth.')->group(function () {
+    Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::post('register', [UserController::class, 'register'])->name('register');
 
-// API Company
-Route::get('company', [CompanyController::class, 'all']);
-Route::post('company', [CompanyController::class, 'create'])->middleware('auth:sanctum');
-
-
-
-
-// End-Point Route Login
-Route::post('login', [UserController::class, 'login']);
-// End-Point Route Register
-Route::post('register', [UserController::class, 'register']);
-// End-Point Route Logout
-Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-// End-Point Route Fetch User
-Route::get('user', [UserController::class, 'fetch'])->middleware('auth:sanctum');
+    // middeleware auth:sanctum
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [UserController::class, 'logout'])->name('logout');
+        Route::get('user', [UserController::class, 'fetch'])->name('user');
+    });
+});

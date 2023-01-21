@@ -2,127 +2,111 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Http\Request;
 use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-
 
 class CompanyController extends Controller
 {
-    // Fuction All Company 
-    public function all(Request $request)
+    public function fetch(Request $request)
     {
+        // Get request data
         $id = $request->input('id');
-        $limit = $request->input('limit', 6);
         $name = $request->input('name');
+        $limit = $request->input('limit', 10);
 
+        // Get company data
+        $companyQuery = Company::with(['users'])->whereHas('users', function ($query) {
+            $query->where('user_id', Auth::id());
+        });
+
+        // Get single data
         if ($id) {
-            $company = Company::with(['users'])->find($id);
+            $company = $companyQuery->find($id);
+
             if ($company) {
-                return ResponseFormatter::success(
-                    $company,
-                    'Data company berhasil diambil'
-                );
+                return ResponseFormatter::success($company, 'Company found');
             }
-            return ResponseFormatter::error(
-                null,
-                'Data company tidak ada',
-                404
-            );
+
+            return ResponseFormatter::error('Company not found', 404);
         }
-        $companies = Company::with(['users']);
+
+        // Get multiple data
+        $companies = $companyQuery;
 
         if ($name) {
             $companies->where('name', 'like', '%' . $name . '%');
         }
-
+        // Return response
         return ResponseFormatter::success(
             $companies->paginate($limit),
-            'Data list company berhasil diambil'
+            'Companies found'
         );
     }
 
-    // Function Create Company
     public function create(CreateCompanyRequest $request)
     {
-
         try {
             // Upload logo
-            if ($request->hasfile('logo')) {
-                $path = $request->file('logo')->store('public/storage');
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('public/logos');
             }
+
             // Create company
             $company = Company::create([
                 'name' => $request->name,
-                'logo' => $path,
+                'logo' => $path
             ]);
 
             if (!$company) {
-                return ResponseFormatter::error(
-                    null,
-                    'Data company gagal ditambahkan',
-                    500
-                );
+                throw new Exception('Company not created');
             }
 
-            // Attach user to company
-            $user = Auth::user();
+            // Attach company to user
+            $user = User::find(Auth::id());
             $user->companies()->attach($company->id);
 
-            // load user and company
+            // Load users at company
             $company->load('users');
 
-            // Return response
-            return ResponseFormatter::success(
-                $company,
-                'Data company berhasil ditambahkan'
-            );
-        } catch (\Exception $e) {
-            return ResponseFormatter::error(
-                [
-                    'message' => 'Something went wrong',
-                    'error' => $e
-                ],
-                'Authentication Failed',
-                500
-            );
+            return ResponseFormatter::success($company, 'Company created');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
 
     public function update(UpdateCompanyRequest $request, $id)
     {
 
-
         try {
+            // Get company
             $company = Company::find($id);
 
+            // Check if company exists
             if (!$company) {
-                return ResponseFormatter::error(
-                    null,
-                    'Data company tidak ada',
-                    404
-                );
+                throw new Exception('Company not found');
             }
 
-            if ($request->hasfile('logo')) {
-                $path = $request->file('logo')->store('public/storage');
+            // Upload logo
+            if ($request->hasFile('logo')) {
+                $path = $request->file('logo')->store('public/logos');
             }
 
+            // Update company
             $company->update([
                 'name' => $request->name,
-                'logo' => $path,
+                'logo' => isset($path) ? $path : $company->logo,
             ]);
 
-            return ResponseFormatter::success(
-                $company,
-                'Data company berhasil diubah'
-            );
-        } catch (\Throwable $th) {
-            //throw $th;
+            return ResponseFormatter::success($company, 'Company updated');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
 }
