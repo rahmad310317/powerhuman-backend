@@ -27,7 +27,7 @@ class TeamController extends Controller
             $team = Team::create([
                 'name' => $request->name,
                 'icon' => $path,
-                'company_id' => $request->company_id
+                'team_id' => $request->team_id
             ]);
 
             if (!$team) {
@@ -66,6 +66,7 @@ class TeamController extends Controller
             $team->update([
                 'name' => $request->name,
                 'icon' => isset($path) ? $path : $team->icon,
+                'team_id' => $request->team_id
             ]);
 
             return ResponseFormatter::success($team, 'Team updated');
@@ -73,7 +74,55 @@ class TeamController extends Controller
             return ResponseFormatter::error($e->getMessage(), 500);
         }
     }
-    public function fecth(Request $request)
+    public function fetch(Request $request)
     {
+        // Get request data
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $limit = $request->input('limit', 10);
+
+        // Get company data
+        $teamQuery = Team::query();
+
+        // Get single data
+        if ($id) {
+            $team = $teamQuery->find($id);
+
+            if ($team) {
+                return ResponseFormatter::success($team, 'Team found');
+            }
+            return ResponseFormatter::error('Team not found', 404);
+        }
+
+        // Get multiple data
+        $teams = $teamQuery->where('company_id', $request->company->id);
+
+        if ($name) {
+            $teams->where('name', 'like', '%' . $name . '%');
+        }
+        // Return response
+        return ResponseFormatter::success(
+            $teams->paginate($limit),
+            'Companies found'
+        );
+    }
+    public function destroy($id)
+    {
+        try {
+            // Get company
+            $team = Team::find($id);
+
+            // Check if company exists
+            if (!$team) {
+                throw new Exception('Team not found');
+            }
+
+            // Delete company
+            $team->delete();
+
+            return ResponseFormatter::success($team, 'Team deleted');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage(), 500);
+        }
     }
 }
