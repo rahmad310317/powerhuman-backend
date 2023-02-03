@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder; 
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // data seeder untuk table users
         // \App\Models\User::factory(10)->create();
-        
+
         // data seeder untuk table companies
         // \App\Models\Company::factory(10)->create();
 
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Role::factory(10)->create();
 
         // data seeder untuk table employes
-        \App\Models\Employes::factory(100)->create();
-            
+        // \App\Models\Employes::factory(100)->create();
+
     }
-} 
+}

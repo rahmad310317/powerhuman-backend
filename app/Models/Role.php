@@ -12,14 +12,15 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-        'role_id',
+        'company_id',
     ];
 
-       // Relationship with Role and Company model ( many to one )
-    public function company(){
+    // Relationship with Role and Company model ( many to one )
+    public function company()
+    {
         return $this->belongsTo(Company::class);
     }
-      // Relationship with Role and Employe model ( one to many )
+    // Relationship with Role and Employe model ( one to many )
     public function employes()
     {
         return $this->hasMany(Employes::class);
@@ -28,5 +29,5 @@ class Role extends Model
     public function responsibilities()
     {
         return $this->hasMany(Responsibility::class);
-    } 
+    }
 }

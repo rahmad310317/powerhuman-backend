@@ -12,7 +12,7 @@ class Team extends Model
 
     protected $fillable = [
         'name',
-        'logo',
+        'icon',
         'company_id',
     ];
 
@@ -22,8 +22,8 @@ class Team extends Model
     {
         return $this->belongsTo(Company::class);
     }
-     
-     // Relationship with team and employee model ( one to many )
+
+    // Relationship with team and employee model ( one to many )
     public function employes()
     {
         return $this->hasMany(Employes::class);

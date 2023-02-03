@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTeamRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateTeamRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check(true);
     }
 
     /**
