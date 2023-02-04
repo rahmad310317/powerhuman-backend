@@ -37,7 +37,6 @@ Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function
     Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
     Route::delete('{id}', [RoleController::class, 'destroy'])->name('delete');
 });
-
 // Auth Route
 Route::name('auth.')->group(function () {
     Route::post('login', [UserController::class, 'login'])->name('login');
