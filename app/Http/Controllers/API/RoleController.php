@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 
+
 class RoleController extends Controller
 {
     public function fetch(Request $request)
@@ -17,12 +18,13 @@ class RoleController extends Controller
         $id = $request->input('id');
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
+        $with_responsibilities = $request->input('with_responsibilities', 0);
 
         $teamQuery = Role::query();
 
         // Get single data
         if ($id) {
-            $role = $teamQuery->find($id);
+            $role = $teamQuery->with('responsibilities')->find($id);
 
             if ($role) {
                 return ResponseFormatter::success($role, 'Role found');
@@ -36,6 +38,10 @@ class RoleController extends Controller
 
         if ($name) {
             $teams->where('name', 'like', '%' . $name . '%');
+        }
+        // Get responsibilities
+        if ($with_responsibilities) {
+            $teams->with('responsibilities');
         }
 
         return ResponseFormatter::success(
@@ -52,11 +58,9 @@ class RoleController extends Controller
                 'name' => $request->name,
                 'company_id' => $request->company_id,
             ]);
-
             if (!$role) {
                 throw new Exception('Role not created');
             }
-
             return ResponseFormatter::success($role, 'Role created');
         } catch (Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 500);

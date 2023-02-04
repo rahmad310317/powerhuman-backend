@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\TeamController;
 use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\ResponsibilitiesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,13 +31,20 @@ Route::prefix('team')->middleware('auth:sanctum')->name('team.')->group(function
     Route::post('update/{id}', [TeamController::class, 'update'])->name('update');
     Route::delete('{id}', [TeamController::class, 'destroy'])->name('delete');
 });
-
+// Role Route
 Route::prefix('role')->middleware('auth:sanctum')->name('role.')->group(function () {
     Route::get('', [RoleController::class, 'fetch'])->name('fetch');
     Route::post('', [RoleController::class, 'create'])->name('create');
     Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
     Route::delete('{id}', [RoleController::class, 'destroy'])->name('delete');
 });
+// Responsibility Route
+Route::prefix('responsibility')->middleware('auth:sanctum')->name('responsibility.')->group(function () {
+    Route::get('', [ResponsibilitiesController::class, 'fetch'])->name('fetch');
+    Route::post('', [ResponsibilitiesController::class, 'create'])->name('create');
+    Route::delete('{id}', [ResponsibilitiesController::class, 'destroy'])->name('delete');
+});
+
 // Auth Route
 Route::name('auth.')->group(function () {
     Route::post('login', [UserController::class, 'login'])->name('login');

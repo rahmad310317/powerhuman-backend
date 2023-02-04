@@ -18,6 +18,7 @@ class TeamController extends Controller
         $name = $request->input('name');
         $limit = $request->input('limit', 10);
 
+
         $teamQuery = Team::query();
 
         // Get single data
@@ -33,6 +34,7 @@ class TeamController extends Controller
 
         // Get multiple data
         $teams = $teamQuery->where('company_id', $request->company_id);
+
 
         if ($name) {
             $teams->where('name', 'like', '%' . $name . '%');

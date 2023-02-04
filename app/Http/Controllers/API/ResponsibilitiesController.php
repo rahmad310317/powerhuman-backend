@@ -9,11 +9,10 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Requests\CreateResponsibilitiesRequest;
 use Exception;
 
-class Responsibilities extends Controller
+class ResponsibilitiesController extends Controller
 {
-    public function fecth(Request $request)
+    public function fetch(Request $request)
     {
-
         try {
             // Get Responsiblities
             $id = $request->input('id');
