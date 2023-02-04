@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateResponsibilities extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateResponsibilities extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check(true);
     }
 
     /**
@@ -24,7 +25,8 @@ class UpdateResponsibilities extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'nullable|string|max:255',
+            'role_id' => 'nullable|integer|exists:roles,id'
         ];
     }
 }

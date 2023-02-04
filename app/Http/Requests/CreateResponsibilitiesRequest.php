@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class CreateResponsibilities extends FormRequest
+class CreateResponsibilitiesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class CreateResponsibilities extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check(true);
     }
 
     /**
@@ -24,7 +25,8 @@ class CreateResponsibilities extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 }
