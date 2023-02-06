@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateEmployeesRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UpdateEmployeesRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check(true);
     }
 
     /**
@@ -24,7 +25,13 @@ class UpdateEmployeesRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'nullable|string|max:255',
+            'age' => 'nullable|integer',
+            'gender' => 'nullable|string|in:MALE,FEMALE',
+            'email' => 'nullable|email',
+            'phone' => 'nullable|string|max:255',
+            'role_id' => 'nullable|integer',
+            'team_id' => 'nullable|integer'
         ];
     }
 }
