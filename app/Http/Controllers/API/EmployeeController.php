@@ -23,6 +23,7 @@ class EmployeeController extends Controller
             $phone = $request->input('phone');
             $role_id = $request->input('role_id');
             $team_id = $request->input('team_id');
+            $companies_id = $request->input('companies_id');
             $limit = $request->input('limit', 10);
 
             $employeeQuery = Employes::query();
@@ -55,6 +56,11 @@ class EmployeeController extends Controller
             if ($team_id) {
                 $employee->where('team_id', 'like', '%' . $team_id . '%');
             }
+            if ($companies_id) {
+                $employee->whereHas('team', function ($query) use ($companies_id) {
+                    $query->where('companies_id', $companies_id);
+                });
+            }
             return ResponseFormatter::success(
                 $employee->paginate($limit),
                 'Employees found'
@@ -79,6 +85,7 @@ class EmployeeController extends Controller
             if (!$employee) {
                 throw new Exception('Employee not created');
             }
+
             return ResponseFormatter::success($employee, 'Employee created');
         } catch (\Exception $e) {
             return ResponseFormatter::error($e->getMessage(), 'Employee not created');
