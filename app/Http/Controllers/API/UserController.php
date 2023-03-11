@@ -18,32 +18,32 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
-            // validasi request
+            // Validate request
             $request->validate([
-                'email' => 'email|required',
-                'password' => 'required',
+                'email' => ['required', 'email'],
+                'password' => ['required'],
             ]);
-            // find my user by email
-            $credentials = request(['email', 'password']);
-            if (!Auth::attempt($credentials)) {
-                return ResponseFormatter::error('Unauthorized', 500);
+
+            // Find user by email
+            $user = User::where('email', $request->email)->firstOrFail();
+            if (!Hash::check($request->password, $user->password)) {
+                throw new Exception('Invalid password');
             }
-            $user = User::where('email', $request->email)->first();
-            if (!Hash::check($request->password, $user->password, [])) {
-                throw new Exception('Invalid Credentials');
-            }
-            // generate token
+
+            // Generate token
             $tokenResult = $user->createToken('authToken')->plainTextToken;
-            // return response
+
+            // Return response
             return ResponseFormatter::success([
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
-                'user' => $user,
-            ]);
-        } catch (Exception $error) {
-            return ResponseFormatter::error(['Authentication Failed', $error]);
+                'user' => $user
+            ], 'Login success');
+        } catch (Exception $e) {
+            return ResponseFormatter::error($e->getMessage());
         }
     }
+
     // Register controller
     public function register(Request $request)
     {
@@ -60,16 +60,8 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-
-            if (!$user) {
-                return ResponseFormatter::error('Failed to register', 500);
-            }
             // generate token
             $tokenResult = $user->createToken('authToken')->plainTextToken;
-
-            if (!$tokenResult) {
-                return ResponseFormatter::error('Failed to token', 500);
-            }
             // return response
             return ResponseFormatter::success([
                 'access_token' => $tokenResult,
@@ -88,12 +80,14 @@ class UserController extends Controller
         // return response
         return ResponseFormatter::success($token, 'Log out success');
     }
+    
     // Fetch user controller
     public function fetch(Request $request)
     {
-        // get user
+        // Get user
         $user = $request->user();
-        // return response
-        return ResponseFormatter::success($user, 'Data user berhasil diambil');
+
+        // Return response
+        return ResponseFormatter::success($user, 'Fetch success');
     }
 }

@@ -61,6 +61,6 @@ Route::name('auth.')->group(function () {
     // middeleware auth:sanctum
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [UserController::class, 'logout'])->name('logout');
-        Route::get('user', [UserController::class, 'fetch'])->name('user');
+        Route::get('user', [UserController::class, 'fetch'])->name('fecth');
     });
 });
